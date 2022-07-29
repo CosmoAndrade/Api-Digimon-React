@@ -1,34 +1,32 @@
 import { useState } from "react";
+import axios from 'axios';
+
+const api = "https://digimon-api.vercel.app/api/digimon"
 
 
 const CardDigimon = () => {
 
 
-    const [digimon, setDigimon] = useState([]);
+  const [digimon, setDigimon] = useState([]);
 
-    fetch("https://digimon-api.vercel.app/api/digimon", {
-      method: "GET",
-      headers: {
-        "content-Type": "application/json",
-      },
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        setDigimon(data);
-      });
-  
-  
+  axios
+    .get(`${api}`)
+    .then((response) => setDigimon(response.data))
+    .catch((err) => {
+      console.error("ops! ocorreu um erro" + err);
+    });
 
-    return ( 
-        <div className="flex-wrap d-flex gap-3  justify-content-center mt-4">
-            
+
+  return (
+    <div className="flex-wrap d-flex gap-3  justify-content-center mt-4">
+
 
       {digimon.map((data) => {
         return (
 
           <div className="card" style={{ width: "300px" }}>
 
-            <img src={data.img} class="card-img-top" />
+            <img src={data.img} class="card-img-top" alt="img" />
 
             <div className="card-body ">
 
@@ -47,8 +45,8 @@ const CardDigimon = () => {
 
 
 
-        </div>
-     );
+    </div>
+  );
 }
- 
+
 export default CardDigimon;
